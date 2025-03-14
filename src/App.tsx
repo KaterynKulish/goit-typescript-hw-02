@@ -6,20 +6,21 @@ import Loader from './components/Loader/Loader';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import ImageModal from './components/ImageModal/ImageModal';
+import { Photos } from './types';
 
 function App() {
-  const [query, setQuery] = useState('');
-  const [photos, setPhotos] = useState([]);
-  const [loader, setLoader] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(15);
-  const [isVisible, setIsVisible] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [modalSrc, setModalSrc] = useState('');
-  const [modalAlt, setModalAlt] = useState('');
+  const [query, setQuery] = useState<string>('');
+  const [photos, setPhotos] = useState<Photos[]>([]);
+  const [loader, setLoader] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(15);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [modalSrc, setModalSrc] = useState<string>('');
+  const [modalAlt, setModalAlt] = useState<string>('');
 
-  const onSubmit = value => {
+  const onSubmit = (value: string) => {
     console.log(value);
     setQuery(value);
     setPhotos([]);
@@ -39,13 +40,14 @@ function App() {
           page,
           perPage
         );
+        console.log(getPhotos);
 
         setPhotos(prev => [...prev, ...results]);
         console.log(results);
         console.log(total_pages);
 
         setIsVisible(page < total_pages);
-      } catch (error) {
+      } catch (error: never) {
         setIsError(error.message);
       } finally {
         setLoader(false);
@@ -58,7 +60,7 @@ function App() {
     setPage(prev => prev + 1);
   };
 
-  const openModal = (src, alt) => {
+  const openModal = (src: string, alt: string) => {
     setModalIsOpen(true);
     setModalSrc(src);
     setModalAlt(alt);
@@ -72,7 +74,7 @@ function App() {
   return (
     <div>
       <header>
-        <SearchBar onSubmit={onSubmit} />{' '}
+        <SearchBar onSubmit={onSubmit} />
       </header>
 
       {photos.length > 0 && (

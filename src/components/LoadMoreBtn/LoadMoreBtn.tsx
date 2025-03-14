@@ -1,6 +1,11 @@
+import { FC } from 'react';
 import s from './LoadMoreBtn.module.css';
 
-const LoadMoreBtn = ({ handleLoadMore }) => {
+interface LoadMoreBtnProps {
+  handleLoadMore: () => void;
+}
+
+const LoadMoreBtn: FC<LoadMoreBtnProps> = ({ handleLoadMore }) => {
   const handleOnClick = () => handleLoadMore();
 
   return (
