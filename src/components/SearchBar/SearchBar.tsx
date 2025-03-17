@@ -7,7 +7,7 @@ interface OnSubmitProps {
 }
 
 const SearchBar: FC<OnSubmitProps> = ({ onSubmit }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string>('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { Photos } from '../../types';
+import { Photo } from '../../types';
 
 interface ImageCardProps {
-  photo: Photos;
+  photo: Photo;
   openModal: (src: string, alt: string) => void;
 }
 
-const ImageCard: FC<ImageCardProps> = ({ photo, openModal }) => {
+const ImageCard = ({ photo, openModal }: ImageCardProps) => {
   return (
     <div>
       <img

@@ -6,13 +6,13 @@ import Loader from './components/Loader/Loader';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import ImageModal from './components/ImageModal/ImageModal';
-import { Photos } from './types';
+import { Photo } from './types';
 
 function App() {
   const [query, setQuery] = useState<string>('');
-  const [photos, setPhotos] = useState<Photos[]>([]);
+  const [photos, setPhotos] = useState<Photo[]>([]);
   const [loader, setLoader] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState<null | string>(null);
   const [page, setPage] = useState<number>(1);
   const [perPage, setPerPage] = useState<number>(15);
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -24,7 +24,7 @@ function App() {
     console.log(value);
     setQuery(value);
     setPhotos([]);
-    setIsError(false);
+    setError(null);
     setPage(1);
     setIsVisible(false);
   };
@@ -32,7 +32,7 @@ function App() {
   useEffect(() => {
     if (!query) return;
     const getPhotos = async () => {
-      setIsError(false);
+      setError(null);
       try {
         setLoader(true);
         const { results, total_pages } = await fetchPhotos(
@@ -40,15 +40,15 @@ function App() {
           page,
           perPage
         );
-        console.log(getPhotos);
+        console.log(results);
 
         setPhotos(prev => [...prev, ...results]);
-        console.log(results);
-        console.log(total_pages);
 
         setIsVisible(page < total_pages);
-      } catch (error: never) {
-        setIsError(error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        }
       } finally {
         setLoader(false);
       }
@@ -80,7 +80,7 @@ function App() {
       {photos.length > 0 && (
         <ImageGallery photos={photos} openModal={openModal} />
       )}
-      {isError && <ErrorMessage isError={isError} />}
+      {error && <ErrorMessage error={error} />}
       {loader && <Loader />}
       {isVisible && <LoadMoreBtn handleLoadMore={handleLoadMore} />}
       <ImageModal
