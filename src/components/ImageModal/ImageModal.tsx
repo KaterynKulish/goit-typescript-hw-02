@@ -17,7 +17,7 @@ Modal.setAppElement('#root');
 
 interface ImageModalProps {
   modalIsOpen: boolean;
-  closeModal: boolean;
+  closeModal: () => void;
   src: string;
   alt: string;
 }
